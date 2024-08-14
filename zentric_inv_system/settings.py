@@ -38,9 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "apps.perfiles_usuario", # Módulo de perfiles de usuario
+    "apps.usuarios", # Módulo de usuarios
+    "apps.productos", # Módulo de productos
+    "apps.tickets" # Módulo de tickets
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE = [ 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
