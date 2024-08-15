@@ -26,6 +26,11 @@ urlpatterns = [
 #     path('api/v1/', include('apps.tickets.urls')), # Incluye las rutas de la app tickets
 #     path('api/v1/', include('apps.perfiles_usuario.urls')) # Incluye las rutas de la app perfiles_usuario
 
+
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  # Registra el nombre de espacio 'rest_framework' para las rutas de autenticación
+
     # Path API Swagger
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui')
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('swagger/api/v1/user/login/', schema_view.with_ui('swagger', cache_timeout=0), name='rest_framework_login'),
+    path('swagger/api/v1/user/logout/', schema_view.with_ui('swagger', cache_timeout=0), name='rest_framework_logout'),
 ]

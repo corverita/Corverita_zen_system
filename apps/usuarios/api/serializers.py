@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
-from ..models import Usuario
+from ..models import Usuario, PerfilUsuario
+
+# Serializador para el GET del modelo de Usuario
+class GetUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
 
 
 # Serializador para el registro de un modelo de Usuario
@@ -36,3 +42,16 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
 class LoginUsuarioSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True)
+
+# Serializer para el perfil de un modelo de Usuario
+class PerfilUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PerfilUsuario
+        fields = ['biografia', 'fecha_nacimiento', 'telefono']
+
+class GetPerfilUsuarioSerializer(serializers.ModelSerializer):
+    usuario = GetUsuarioSerializer()
+
+    class Meta:
+        model = PerfilUsuario
+        fields = ['usuario', 'biografia', 'fecha_nacimiento', 'telefono']

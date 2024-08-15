@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "drf_yasg", # Documentación de la API Swagger
     "rest_framework", # Framework para la creación de APIs
     "rest_framework_simplejwt", # Token de autenticación
+    "rest_framework_simplejwt.token_blacklist", # Token de autenticación
 ]
 
 MIDDLEWARE = [ 
@@ -140,3 +141,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'usuarios.Usuario'
+
+# Swagger Settings
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': True,  # Desactiva la autenticación por sesión
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+        },
+    },
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
+}
