@@ -31,3 +31,10 @@ Una vez que estemos con el ambiente activo, podremos instalar nuestras dependenc
 
 Para instalar los requerimientos del sistema utilizaremos el siguiente comando
 pip install -r requirements.txt
+
+# Ejecución del proyecto
+
+Una vez que tengamos todas las dependencias, entonces podremos ejecutar el comando
+docker-compose up -d
+
+Y podremos revisar que levantaremos las instancias correspondientes como lo son la base de datos postgres y el servicio web de manera local.

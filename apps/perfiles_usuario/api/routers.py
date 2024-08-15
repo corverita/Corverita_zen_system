@@ -4,4 +4,4 @@ from .views import PerfilUsuarioViewSet
 
 router = DefaultRouter()
 
-router.register(prefix='perfil_usuario', viewset=PerfilUsuarioViewSet, basename='perfil_usuario')
+router.register(prefix='perfil-usuario', viewset=PerfilUsuarioViewSet, basename='perfil-usuario')

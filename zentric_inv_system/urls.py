@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('apps.usuarios.urls')), # Incluye las rutas de la app usuarios
     path('api/v1/', include('apps.perfiles_usuario.urls')), # Incluye las rutas de la app perfiles_usuario
+    path('api/v1/', include('apps.catalogos.urls')), # Incluye las rutas de la app catalogos
     # path('api/v1/', include('apps.productos.urls')), # Incluye las rutas de la app productos
 #     path('api/v1/', include('apps.tickets.urls')), # Incluye las rutas de la app tickets
 
