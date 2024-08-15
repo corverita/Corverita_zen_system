@@ -3,3 +3,6 @@ env/*
 
 # Archivos temporales
 *pycache*
+
+# Archivos de migraciones
+migrations/
