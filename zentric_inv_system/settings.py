@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "apps.perfiles_usuario", # Módulo de perfiles de usuario
     "apps.usuarios", # Módulo de usuarios
     "apps.productos", # Módulo de productos
-    "apps.tickets" # Módulo de tickets
+    "apps.tickets", # Módulo de tickets
+    "apps.catalogos", # Módulo de catálogos
 ]
 
 MIDDLEWARE = [ 
@@ -84,7 +85,6 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "zentric",
         "USER": "postgres",
-        # "PASSWORD": os.environ.get("DB_PASSWORD"),
         "PASSWORD": "password",
         "HOST": os.environ.get("DB_HOST"),
         "PORT": os.environ.get("DB_PORT"),
