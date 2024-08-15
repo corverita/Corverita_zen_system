@@ -39,11 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # apps del proyecto
     "apps.perfiles_usuario", # Módulo de perfiles de usuario
     "apps.usuarios", # Módulo de usuarios
     "apps.productos", # Módulo de productos
     "apps.tickets", # Módulo de tickets
     "apps.catalogos", # Módulo de catálogos
+
+    # apps de terceros
+    "drf_yasg", # Documentación de la API Swagger
+    "rest_framework", # Framework para la creación de APIs
+    "rest_framework_simplejwt", # Token de autenticación
 ]
 
 MIDDLEWARE = [ 
