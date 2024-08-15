@@ -22,9 +22,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('apps.usuarios.urls')), # Incluye las rutas de la app usuarios
-#     path('api/v1/', include('apps.productos.urls')), # Incluye las rutas de la app productos
+    path('api/v1/', include('apps.perfiles_usuario.urls')), # Incluye las rutas de la app perfiles_usuario
+    # path('api/v1/', include('apps.productos.urls')), # Incluye las rutas de la app productos
 #     path('api/v1/', include('apps.tickets.urls')), # Incluye las rutas de la app tickets
-#     path('api/v1/', include('apps.perfiles_usuario.urls')) # Incluye las rutas de la app perfiles_usuario
 
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  # Registra el nombre de espacio 'rest_framework' para las rutas de autenticación
