@@ -7,6 +7,7 @@ from apps.catalogos.models import TipoMovimiento
 movimiento_entrada = TipoMovimiento.objects.get(nombre='Entrada')
 movimiento_salida = TipoMovimiento.objects.get(nombre='Salida')
 
+# Esta signal se encarga de detectar los movimientos de inventario de un producto y registrarlos en el historial.
 @receiver(post_save, sender=Producto)
 def detectar_movimiento_inventario(sender, instance, created, **kwargs):
     tipo_movimiento = None
