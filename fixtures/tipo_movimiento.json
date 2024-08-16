@@ -1,0 +1,18 @@
+[
+    {
+        "model": "catalogos.tipomovimiento",
+        "pk": 1,
+        "fields": {
+            "nombre": "Entrada",
+            "descripcion": "Entrada de inventario"
+        }
+    },
+    {
+        "model": "catalogos.tipomovimiento",
+        "pk": 2,
+        "fields": {
+            "nombre": "Salida",
+            "descripcion": "Salida de inventario"
+        }
+    }
+]

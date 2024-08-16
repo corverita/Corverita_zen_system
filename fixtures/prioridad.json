@@ -1,0 +1,26 @@
+[
+    {
+        "model": "catalogos.prioridad",
+        "pk": 1,
+        "fields": {
+            "nombre": "Alta",
+            "descripcion": "Alta prioridad"
+        }
+    },
+    {
+        "model": "catalogos.prioridad",
+        "pk": 2,
+        "fields": {
+            "nombre": "Media",
+            "descripcion": "Media prioridad"
+        }
+    },
+    {
+        "model": "catalogos.prioridad",
+        "pk": 3,
+        "fields": {
+            "nombre": "Baja",
+            "descripcion": "Baja prioridad"
+        }
+    }
+]
