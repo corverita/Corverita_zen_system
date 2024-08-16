@@ -3,8 +3,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 
-from datetime import datetime
-
 from apps.core.pagination import Paginador
 
 from ..models import *
@@ -40,8 +38,6 @@ class ProductoViewSet(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data)
         if serializer.is_valid():
             instancia = serializer.save()
-            instance.fecha_modificacion = datetime.now() # Actualización de la fecha de modificación de la instancia
-            instance = instance.save()
             return Response(self.serializer_get(instance = instancia).data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -49,3 +45,9 @@ class ProductoViewSet(ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class HistorialMovimientoInventarioViewSet(ModelViewSet):
+    queryset = HistorialMovimientoInventario.objects.all()
+    serializer_class = HistorialMovimientoInventarioSerializer
+    http_method_names = ['get']
+    pagination_class = Paginador

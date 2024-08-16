@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from apps.catalogos.api.serializers import BaseTipoMovimientoSerializer
 from ..models import *
 
 # Serializer para el catálogo de Producto
@@ -23,3 +24,13 @@ class PostProductoSerializer(BaseProductoSerializer):
 class DeleteProductoSerializer(BaseProductoSerializer):
     class Meta(BaseProductoSerializer.Meta):
         fields = ['id']
+
+# Serializer para el historial de movimientos de inventario
+class HistorialMovimientoInventarioSerializer(serializers.ModelSerializer):
+    fecha_movimiento = serializers.DateTimeField(format='%d-%m-%Y %H:%M:%S', read_only=True)
+    producto = BaseProductoSerializer(read_only=True)
+    tipo_movimiento = BaseTipoMovimientoSerializer(read_only=True)
+
+    class Meta:
+        model = HistorialMovimientoInventario
+        fields = ['id', 'producto', 'tipo_movimiento', 'cantidad', 'fecha_movimiento']
