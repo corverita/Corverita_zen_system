@@ -50,12 +50,16 @@ class AsignarPrioridadTicket(serializers.ModelSerializer):
         fields = ['prioridad']
 
     def validate(self, data):
-        usuario = self.context['usuario']
-        if not usuario.is_superuser: # Solo los miembros del staff pueden asignar prioridades
-            raise serializers.ValidationError("No tienes permisos para asignar la prioridad")
         if not Prioridad.objects.filter(pk=data['prioridad']).exists():
             raise serializers.ValidationError("La prioridad seleccionada no existe")
         return data
+    
+class MarcarSolucionadoTicket(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Ticket
+        fields = []
+
 
 # Serializer para recibir información de DELETE
 class DeleteTicketSerializer(serializers.ModelSerializer):
@@ -85,6 +89,15 @@ class PostComentarioSerializer(serializers.ModelSerializer):
         validated_data['usuario'] = usuario
         comentario = Comentario.objects.create(**validated_data)
         return comentario
+    
+    def validate(self, data):
+        if not Ticket.objects.filter(pk=data['ticket'].id).exists():
+            raise serializers.ValidationError("El ticket seleccionado no existe")
+        
+        estado_solucionado = Estatus.objects.get(nombre='Solucionado')
+        ticket = Ticket.objects.get(pk=data['ticket'].id)
+        if ticket.estatus == estado_solucionado:
+            raise serializers.ValidationError("El ticket ya se encuentra solucionado, por tanto no puedes agregar más comentarios")
 
     def validate_comentario(self, value):
         if len(value) < 5:

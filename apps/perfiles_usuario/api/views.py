@@ -28,11 +28,6 @@ class PerfilUsuarioViewSet(ModelViewSet):
         return self.serializer_class
     
     def get_permissions(self):
-        try:
-            if self.request.user.is_authenticated:
-                perfil = self.request.user.perfil
-        except ObjectDoesNotExist:
-            raise NotFound(detail="El usuario no tiene un perfil asociado.")
         
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated()]

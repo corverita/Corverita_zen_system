@@ -10,7 +10,7 @@ class EsProveedor(permissions.BasePermission):
     
 class EsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user and request.user.is_authenticated and (request.user.perfil!=None and request.user.perfil.rol.nombre == 'Admin')
+        return request.user and request.user.is_authenticated and request.user.perfil.rol.nombre == 'Admin'
     
 class EsSoporte(permissions.BasePermission):
     def has_permission(self, request, view):

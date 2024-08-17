@@ -21,12 +21,12 @@ class GetPerfilUsuarioSerializer(serializers.ModelSerializer):
 class AsignarRolSerializer(serializers.Serializer):
     rol = serializers.IntegerField()
     usuario = serializers.IntegerField()
-
-    def validate(self, data):
-        if not PerfilUsuario.objects.filter(usuario__id=data['usuario']).exists():
-            raise serializers.ValidationError("El usuario no tiene un perfil")
-        return data
     
+    def validate_usuario(self, value):
+        if not PerfilUsuario.objects.filter(usuario__id=value).exists():
+            raise serializers.ValidationError("El usuario seleccionado no tiene un perfil")
+        return value
+
     def validate_rol(self, value):
         if not Rol.objects.filter(pk=value).exists():
             raise serializers.ValidationError("El rol seleccionado no existe")

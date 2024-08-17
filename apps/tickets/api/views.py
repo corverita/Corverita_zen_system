@@ -36,6 +36,8 @@ class TicketViewSet(GenericCatalogBaseViewSet):
             return DeleteTicketSerializer
         if self.action == 'asignar_prioridad':
             return AsignarPrioridadTicket
+        if self.action == 'marcar_solucionado':
+            return MarcarSolucionadoTicket
         return self.serializer_get
     
     def get_permissions(self):
@@ -85,9 +87,9 @@ class TicketViewSet(GenericCatalogBaseViewSet):
         ticket.save()
         return Response(self.serializer_get(instance = ticket).data, status=status.HTTP_200_OK)
     
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=['post'])
     def marcar_solucionado(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data, context={'usuario': request.user})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         

@@ -1,0 +1,57 @@
+[
+    {
+        "model": "perfiles_usuario.perfilusuario",
+        "pk": 1,
+        "fields": {
+            "usuario": 2,
+            "biografia": "string",
+            "fecha_nacimiento": "2024-08-17",
+            "telefono": "+8521494817",
+            "rol": 1
+        }
+    },
+    {
+        "model": "perfiles_usuario.perfilusuario",
+        "pk": 2,
+        "fields": {
+            "usuario": 3,
+            "biografia": "soporte",
+            "fecha_nacimiento": "2024-08-17",
+            "telefono": "4921419597",
+            "rol": 4
+        }
+    },
+    {
+        "model": "perfiles_usuario.perfilusuario",
+        "pk": 3,
+        "fields": {
+            "usuario": 4,
+            "biografia": "Proveedor",
+            "fecha_nacimiento": "2024-08-17",
+            "telefono": "+1195691357762",
+            "rol": 2
+        }
+    },
+    {
+        "model": "perfiles_usuario.perfilusuario",
+        "pk": 4,
+        "fields": {
+            "usuario": 5,
+            "biografia": "Cliente",
+            "fecha_nacimiento": "2024-08-17",
+            "telefono": "195535735287959",
+            "rol": 3
+        }
+    },
+    {
+        "model": "perfiles_usuario.perfilusuario",
+        "pk": 5,
+        "fields": {
+            "usuario": 1,
+            "biografia": "superuser",
+            "fecha_nacimiento": "2024-08-17",
+            "telefono": "+691669838878",
+            "rol": 1
+        }
+    }
+]

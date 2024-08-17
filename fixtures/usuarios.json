@@ -1,0 +1,92 @@
+[
+    {
+        "model": "usuarios.usuario",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$EgaF8xOoOvveQVFNojrWba$JY0izirRkNuBesgJhmZFUwZQ/duWsNDF3rlWfR6aew0=",
+            "last_login": "2024-08-17T21:35:40.315Z",
+            "is_superuser": true,
+            "username": "corverita",
+            "first_name": "",
+            "last_name": "",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2024-08-17T21:29:50.903Z",
+            "email": "oscar.corvera@live.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.usuario",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$QLkEe6e3DwrHfNUFzqO24f$s4Fx3plmlDvID9P5GfD+zQGIjQUmXNfNtEBRi4A2bfw=",
+            "last_login": "2024-08-17T21:32:33.370Z",
+            "is_superuser": false,
+            "username": "Admin",
+            "first_name": "admin",
+            "last_name": "admin",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-08-17T21:30:32.873Z",
+            "email": "admin@admin.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.usuario",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$UXpb3MfoHYwUDBIfC6IAhq$hohT4YR0xNscc2pdAPSiqubkVvKv6cvxEoWUbnRcvXY=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Soporte",
+            "first_name": "soporte",
+            "last_name": "soporte",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-08-17T21:31:02.448Z",
+            "email": "soporte@soporte.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.usuario",
+        "pk": 4,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$89hEEwyZi1qURM3xxiE8Tp$/m8v1DoUX4mGS5l1Q1XV5aex/GRIjx1cYXVOeX7nB+w=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Proveedor",
+            "first_name": "Proveedor",
+            "last_name": "proveedor",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-08-17T21:31:32.768Z",
+            "email": "proveedor@proveedor.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "usuarios.usuario",
+        "pk": 5,
+        "fields": {
+            "password": "pbkdf2_sha256$870000$NGwEvBfj4O8REJz7I7GLD7$v0GH6PLXCTW4zDmr6e/MMjqnDSxCEc87WF/Nlz7rbC8=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "Cliente",
+            "first_name": "cliente",
+            "last_name": "cliente",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2024-08-17T21:31:48.517Z",
+            "email": "cliente@cliente.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

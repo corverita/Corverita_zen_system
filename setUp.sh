@@ -20,6 +20,8 @@ python manage.py loaddata fixtures/prioridad.json
 python manage.py loaddata fixtures/tipo_movimiento.json
 python manage.py loaddata fixtures/permisos.json
 python manage.py loaddata fixtures/rol.json
+python manage.py loaddata fixtures/usuarios.json
+python manage.py loaddata fixtures/perfiles_usuarios.json
 
 # Iniciar el servidor de desarrollo
 echo "Iniciando el servidor de desarrollo..."
