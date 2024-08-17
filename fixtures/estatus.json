@@ -22,5 +22,13 @@
             "nombre": "Solucionado",
             "descripcion": "Estado Solucionado"
         }
+    },
+    {
+        "model": "catalogos.estatus",
+        "pk": 4,
+        "fields": {
+            "nombre": "Nuevo",
+            "descripcion": "Estado Nuevo"
+        }
     }
 ]
