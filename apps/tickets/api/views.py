@@ -30,6 +30,11 @@ class TicketViewSet(GenericCatalogBaseViewSet):
             return AsignarPrioridadTicket
         return self.serializer_get
     
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return super().get_queryset()
+        return super().get_queryset().filter(usuario=self.request.user)
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'usuario': request.user})
         if serializer.is_valid():
