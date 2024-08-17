@@ -20,14 +20,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /code/
 
 # Copiar el script entrypoint y el script de inicio
-COPY entrypoint.sh /code/entrypoint.sh
-COPY start.sh /code/start.sh
+COPY ./entrypoint.sh /code/entrypoint.sh
+COPY ./setUp.sh /code/setUp.sh
 
 # Hacer que los scripts sean ejecutables
-RUN chmod +x /code/entrypoint.sh /code/start.sh
+RUN chmod +x /code/entrypoint.sh /code/setUp.sh
 
 # Establecer el entrypoint
 ENTRYPOINT ["/code/entrypoint.sh"]
 
 # Comando para ejecutar la aplicación
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "inventory.wsgi:application"]
+CMD ["python", "./manage.py", 'runserver',"0.0.0.0:8000"]

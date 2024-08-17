@@ -38,3 +38,16 @@ Una vez que tengamos todas las dependencias, entonces podremos ejecutar el coman
 docker-compose up -d
 
 Y podremos revisar que levantaremos las instancias correspondientes como lo son la base de datos postgres y el servicio web de manera local.
+
+Una vez que tengamos corriendo el proyecto en docker, entonces ejecutaremos el siguiente comando para crear un super usuario
+python manage.py createsuperuser
+
+Nos solicitará un usuario, un correo y una contraseña, estas serán tus credenciales.
+
+# Primeros pasos
+
+- Entraremos en nuestra conexión frontend con nuestro superusuario, para poder comenzar a gestionar detalles de primeras implementaciones.
+- Registraremos un perfil de usuario, para poder utilizar el sistema con los roles y permisos personalizados.
+- Una vez registremos un perfil de usuario, nos asignaremos el rol de Admin, para tener total libertad de permisos y acciones, así como podemos habilitarle a otra gente sus roles.
+
+Ya a partir de aquí tendremos todo el sistema completamente listo y libre.
