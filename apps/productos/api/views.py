@@ -24,7 +24,7 @@ class ProductoViewSet(ModelViewSet):
             return BaseProductoSerializer
         if self.action == 'destroy':
             return DeleteProductoSerializer
-        return self.serializer_class
+        return self.serializer_get
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

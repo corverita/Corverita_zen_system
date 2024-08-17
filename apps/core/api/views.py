@@ -2,6 +2,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.exceptions import NotFound
+from django_filters.rest_framework import DjangoFilterBackend
+
+from django.http import Http404
 
 from apps.core.pagination import Paginador
 
@@ -14,7 +18,7 @@ class GenericCatalogBaseViewSet(ModelViewSet):
     serializer_get = None
     http_method_names = ['get', 'post', 'put', 'delete']
     search_fields = ['nombre', 'descripcion']
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     pagination_class = Paginador
 
     def get_serializer_class(self):
@@ -24,7 +28,7 @@ class GenericCatalogBaseViewSet(ModelViewSet):
             return CatalogoSerializer
         if self.action == 'destroy':
             return DeleteCatalogoSerializer
-        return self.serializer_class
+        return self.serializer_get
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -45,3 +49,9 @@ class GenericCatalogBaseViewSet(ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+        
+    def get_object(self):
+        try:
+            return super().get_object()
+        except Http404:
+            raise NotFound(detail="El objeto con el id que buscas no existe.")

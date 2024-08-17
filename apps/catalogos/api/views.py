@@ -15,7 +15,7 @@ class EstatusViewSet(GenericCatalogBaseViewSet):
             return BaseEstatusSerializer
         if self.action == 'destroy':
             return DeleteEstatusSerializer
-        return self.serializer_class
+        return self.serializer_get
 
 # ViewSet para el modelo de Prioridad
 class PrioridadViewSet(GenericCatalogBaseViewSet):
@@ -29,7 +29,7 @@ class PrioridadViewSet(GenericCatalogBaseViewSet):
             return BasePrioridadSerializer
         if self.action == 'destroy':
             return DeletePrioridadSerializer
-        return self.serializer_class
+        return self.serializer_get
     
 # ViewSet para el modelo de TipoMovimiento
 class TipoMovimientoViewSet(GenericCatalogBaseViewSet):
@@ -43,4 +43,4 @@ class TipoMovimientoViewSet(GenericCatalogBaseViewSet):
             return BaseTipoMovimientoSerializer
         if self.action == 'destroy':
             return DeleteTipoMovimientoSerializer
-        return self.serializer_class
+        return self.serializer_get

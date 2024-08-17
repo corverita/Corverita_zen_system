@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "rest_framework", # Framework para la creación de APIs
     "rest_framework_simplejwt", # Token de autenticación
     "rest_framework_simplejwt.token_blacklist", # Token de autenticación
+    "django_filters", # Filtros para las APIs
 ]
 
 MIDDLEWARE = [ 

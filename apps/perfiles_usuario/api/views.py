@@ -31,7 +31,7 @@ class PerfilUsuarioViewSet(ModelViewSet):
     # Método POST
     def create(self, request, *args, **kwargs):
         if self.get_object() != None:
-            return Response({"message": "El usuario ya tiene un perfil"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "El usuario ya tiene un perfil"}, status=status.HTTP_400_BAD_REQUEST)
         
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

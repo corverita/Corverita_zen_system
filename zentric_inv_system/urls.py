@@ -24,7 +24,7 @@ urlpatterns = [
     path('api/v1/', include('apps.perfiles_usuario.urls')), # Incluye las rutas de la app perfiles_usuario
     path('api/v1/catalogos/', include('apps.catalogos.urls')), # Incluye las rutas de la app catalogos
     path('api/v1/', include('apps.productos.urls')), # Incluye las rutas de la app productos
-#     path('api/v1/', include('apps.tickets.urls')), # Incluye las rutas de la app tickets
+    path('api/v1/tickets/', include('apps.tickets.urls')), # Incluye las rutas de la app tickets
 
 
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),  # Registra el nombre de espacio 'rest_framework' para las rutas de autenticación

@@ -38,19 +38,19 @@ class LoginView(GenericAPIView):
                 'user': GetUsuarioSerializer(user).data
             })
         
-        return Response({"message": "Los datos no son correctos"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": "Los datos no son correctos"}, status=status.HTTP_400_BAD_REQUEST)
     
 class LogoutView(TokenBlacklistView):
     
     def post(self, request):
         if not request.data.get('refresh'):
-            return Response({"message": "No se ha iniciado sesión"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "No se ha iniciado sesión"}, status=status.HTTP_400_BAD_REQUEST)
         
         refresh_token = request.data.get('refresh')
         try:
             token = RefreshToken(refresh_token)
         except TokenError as e:
-            return Response({"message": "Token no válido o este ya ha sido eliminado anteriormente"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "Token no válido o este ya ha sido eliminado anteriormente"}, status=status.HTTP_400_BAD_REQUEST)
         
         token.blacklist()
-        return Response({"message": "Token eliminado"}, status=status.HTTP_200_OK)
+        return Response({"detail": "Token eliminado"}, status=status.HTTP_200_OK)

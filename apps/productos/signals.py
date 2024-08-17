@@ -17,6 +17,7 @@ def detectar_movimiento_inventario(sender, instance, created, **kwargs):
             producto=instance,
             tipo_movimiento=movimiento_entrada,
             stock=instance.stock,
+            cantidad = cantidad
         )
     else:
         historial_anterior = HistorialMovimientoInventario.objects.filter(producto=instance).latest('fecha_movimiento')
