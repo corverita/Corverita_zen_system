@@ -2,10 +2,13 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 from ..models import PerfilUsuario
 from .serializers import *
 
+from apps.usuarios.permissions import *
+from apps.core.permissions import EsOwner
 from apps.usuarios.models import Rol
 
 class PerfilUsuarioViewSet(ModelViewSet):
@@ -21,8 +24,21 @@ class PerfilUsuarioViewSet(ModelViewSet):
         if self.action == 'asignar_rol':
             return AsignarRolSerializer
         return self.serializer_class
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated()]
+        if self.action in ['create']:
+            return [IsAuthenticated()]
+        if self.action in ['update_profile']:
+            return [EsOwner()]
+        if self.action == 'asignar_rol':
+            return [EsSuperUsuario() or (EsAdmin() or EsSoporte())]
+        return super().get_permissions
 
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return PerfilUsuario.objects.none()
         if self.request.user.is_superuser:
             return self.queryset.all()
         return self.queryset.filter(usuario=self.request.user)

@@ -6,8 +6,11 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.contrib.auth.models import AnonymousUser
 
 from apps.core.api.views import GenericCatalogBaseViewSet
+from apps.core.permissions import *
 
 from ..models import *
 from ..permissions import *
@@ -47,6 +50,8 @@ class TicketViewSet(GenericCatalogBaseViewSet):
         return super().get_permissions()
     
     def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Ticket.objects.none()
         if self.request.user.perfil.rol.nombre in ['Admin', 'Soporte']:
             return super().get_queryset()
         return super().get_queryset().filter(usuario=self.request.user)
@@ -82,10 +87,6 @@ class TicketViewSet(GenericCatalogBaseViewSet):
         if ticket.estatus == estatus_solucionado:
             return Response({'detail': 'El ticket ya se encuentra solucionado'}, status=status.HTTP_400_BAD_REQUEST)
         
-        # Determinar si el usuario es el creador del ticket o si es un miembro del staff
-        if not request.user.is_superuser and ticket.usuario != request.user:
-            return Response({'detail': 'No tienes permisos para marcar el ticket como solucionado'}, status=status.HTTP_403_FORBIDDEN)
-        
         ticket.estatus = estatus_solucionado
         ticket.save()
         return Response(self.serializer_get(instance = ticket).data, status=status.HTTP_200_OK)
@@ -106,6 +107,17 @@ class ComentarioViewSet(GenericCatalogBaseViewSet):
         if self.action == 'destroy':
             return DeleteComentarioSerializer
         return self.serializer_get
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [PuedeVerComentarios()]
+        if self.action == 'create':
+            return [PuedeCrearComentarios()]
+        if self.action == 'update':
+            return [PuedeEditarComentarios() and EsOwner()]
+        if self.action == 'destroy':
+            return [PuedeEliminarComentarios() or EsOwner()]
+        return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, context={'usuario': request.user})

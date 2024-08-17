@@ -25,6 +25,35 @@ class DeleteProductoSerializer(BaseProductoSerializer):
     class Meta(BaseProductoSerializer.Meta):
         fields = ['id']
 
+class RestockProductoSerializer(serializers.ModelSerializer):
+    cantidad = serializers.IntegerField()
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'cantidad']
+
+    def update(self, instance, validated_data):
+        instance.stock += validated_data.get('cantidad')
+        instance.save()
+        return instance
+    
+class VendidoProductoSerializer(serializers.ModelSerializer):
+    cantidad = serializers.IntegerField()
+
+    class Meta:
+        model = Producto
+        fields = ['id', 'cantidad']
+
+    def validate_cantidad(self, value):
+        if value > self.instance.stock:
+            raise serializers.ValidationError('No hay suficiente stock para realizar la venta')
+        return value
+
+    def update(self, instance, validated_data):
+        instance.stock -= validated_data.get('cantidad')
+        instance.save()
+        return instance
+
 # Serializer para el historial de movimientos de inventario
 class HistorialMovimientoInventarioSerializer(serializers.ModelSerializer):
     fecha_movimiento = serializers.DateTimeField(format='%d-%m-%Y %H:%M:%S', read_only=True)

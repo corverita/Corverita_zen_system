@@ -1,1 +1,88 @@
-[{"model": "usuarios.rol", "pk": 1, "fields": {"nombre": "Admin", "permisos": [1, 2, 3, 4, 5, 6]}}, {"model": "usuarios.rol", "pk": 2, "fields": {"nombre": "Proveedor", "permisos": []}}, {"model": "usuarios.rol", "pk": 3, "fields": {"nombre": "Cliente", "permisos": []}}, {"model": "usuarios.rol", "pk": 4, "fields": {"nombre": "Staff", "permisos": []}}]
+[
+    {
+        "model": "usuarios.rol",
+        "pk": 1,
+        "fields": {
+            "nombre": "Admin",
+            "permisos": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16
+            ]
+        }
+    },
+    {
+        "model": "usuarios.rol",
+        "pk": 2,
+        "fields": {
+            "nombre": "Proveedor",
+            "permisos": [
+                1,
+                2,
+                3,
+                4,
+                6,
+                7,
+                13,
+                14,
+                15
+            ]
+        }
+    },
+    {
+        "model": "usuarios.rol",
+        "pk": 3,
+        "fields": {
+            "nombre": "Cliente",
+            "permisos": [
+                1,
+                2,
+                3,
+                4,
+                6,
+                7,
+                13,
+                14,
+                15
+            ]
+        }
+    },
+    {
+        "model": "usuarios.rol",
+        "pk": 4,
+        "fields": {
+            "nombre": "Soporte",
+            "permisos": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16
+            ]
+        }
+    }
+]

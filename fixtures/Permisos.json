@@ -1,1 +1,114 @@
-[{"model": "usuarios.permiso", "pk": 1, "fields": {"nombre": "Crear Tickets"}}, {"model": "usuarios.permiso", "pk": 2, "fields": {"nombre": "Ver Tickets"}}, {"model": "usuarios.permiso", "pk": 3, "fields": {"nombre": "Editar Tickets"}}, {"model": "usuarios.permiso", "pk": 4, "fields": {"nombre": "Eliminar Tickets"}}, {"model": "usuarios.permiso", "pk": 5, "fields": {"nombre": "Asignar Prioridad a Tickets"}}, {"model": "usuarios.permiso", "pk": 6, "fields": {"nombre": "Marcar Solucionado Tickets"}}]
+[
+    {
+        "model": "usuarios.permiso",
+        "pk": 1,
+        "fields": {
+            "nombre": "Crear Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 2,
+        "fields": {
+            "nombre": "Ver Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 3,
+        "fields": {
+            "nombre": "Editar Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 4,
+        "fields": {
+            "nombre": "Eliminar Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 5,
+        "fields": {
+            "nombre": "Asignar Prioridad a Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 6,
+        "fields": {
+            "nombre": "Marcar Solucionado Tickets"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 7,
+        "fields": {
+            "nombre": "Crear Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 8,
+        "fields": {
+            "nombre": "Ver Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 9,
+        "fields": {
+            "nombre": "Editar Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 10,
+        "fields": {
+            "nombre": "Eliminar Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 11,
+        "fields": {
+            "nombre": "Restock Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 12,
+        "fields": {
+            "nombre": "Vender Producto"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 13,
+        "fields": {
+            "nombre": "Crear Comentario"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 14,
+        "fields": {
+            "nombre": "Ver Comentario"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 15,
+        "fields": {
+            "nombre": "Editar Comentario"
+        }
+    },
+    {
+        "model": "usuarios.permiso",
+        "pk": 16,
+        "fields": {
+            "nombre": "Eliminar Comentario"
+        }
+    }
+]

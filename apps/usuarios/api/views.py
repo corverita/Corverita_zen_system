@@ -3,7 +3,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenBlacklistView
 from rest_framework_simplejwt.exceptions import TokenError
@@ -11,6 +11,7 @@ from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate
 
 from apps.core.api.views import GenericCatalogBaseViewSet
+from apps.core.permissions import *
 
 from .serializers import *
 from ..permissions import *
@@ -44,10 +45,9 @@ class LoginView(GenericAPIView):
         return Response({"detail": "Los datos no son correctos"}, status=status.HTTP_400_BAD_REQUEST)
     
 class LogoutView(TokenBlacklistView):
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
-        if not request.data.get('refresh'):
-            return Response({"detail": "No se ha iniciado sesión"}, status=status.HTTP_400_BAD_REQUEST)
         
         refresh_token = request.data.get('refresh')
         try:
@@ -72,6 +72,8 @@ class PermisoViewSet(GenericCatalogBaseViewSet):
         if self.action == 'destroy':
             return DeletePermisoSerializer
         return self.serializer_get
+    
+    # Aquí no implemento get_permissions porque no tiene razón de ser que el usuario general pueda ver/modificar los permisos
 
 class RolViewSet(GenericCatalogBaseViewSet):
     queryset = Rol.objects.all()
@@ -89,6 +91,17 @@ class RolViewSet(GenericCatalogBaseViewSet):
         if self.action == 'asignar_permisos':
             return AsignarPermisosRolSerializer
         return self.serializer_get
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [EsAdmin()]
+        if self.action in ['create']:
+            return [EsAdmin()]
+        if self.action in ['update']:
+            return [EsAdmin()]
+        if self.action == 'asignar_permisos':
+            return [EsAdmin()]
+        return super().get_permissions()
     
     @action(detail=True, methods=['put'])
     def asignar_permisos(self, request, *args, **kwargs):

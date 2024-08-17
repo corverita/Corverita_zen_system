@@ -3,13 +3,21 @@ from django.dispatch import receiver
 from .models import Producto, HistorialMovimientoInventario
 from apps.catalogos.models import TipoMovimiento
 
-# Obtenemos los tipos de movimiento de nuestro catálogo, esperando que la base de datos ya esté lista para no provocar errores.
-movimiento_entrada = TipoMovimiento.objects.get(nombre='Entrada')
-movimiento_salida = TipoMovimiento.objects.get(nombre='Salida')
 
 # Esta signal se encarga de detectar los movimientos de inventario de un producto y registrarlos en el historial.
 @receiver(post_save, sender=Producto)
 def detectar_movimiento_inventario(sender, instance, created, **kwargs):
+    # Obtenemos los tipos de movimiento de nuestro catálogo, esperando que la base de datos ya esté lista para no provocar errores.
+    try:
+        movimiento_entrada = TipoMovimiento.objects.get(nombre='Entrada')
+    except TipoMovimiento.DoesNotExist:
+        movimiento_entrada = TipoMovimiento.objects.create(nombre='Entrada', descripcion="Entrada de inventario")
+
+    try:
+        movimiento_salida = TipoMovimiento.objects.get(nombre='Salida')
+    except TipoMovimiento.DoesNotExist:
+        movimiento_salida = TipoMovimiento.objects.create(nombre='Salida', descripcion="Salida de inventario")
+    
     tipo_movimiento = None
     cantidad = instance.stock
     if created:

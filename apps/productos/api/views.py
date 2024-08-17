@@ -2,9 +2,12 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.decorators import action
 
 from apps.core.pagination import Paginador
+from apps.core.permissions import *
 
+from ..permissions import *
 from ..models import *
 from .serializers import *
 
@@ -24,7 +27,26 @@ class ProductoViewSet(ModelViewSet):
             return BaseProductoSerializer
         if self.action == 'destroy':
             return DeleteProductoSerializer
+        if self.action == 'restock':
+            return RestockProductoSerializer
+        if self.action == 'vendido':
+            return VendidoProductoSerializer
         return self.serializer_get
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [PuedeVerProducto()]
+        if self.action in ['create']:
+            return [PuedeCrearProducto()]
+        if self.action in ['update']:
+            return [PuedeEditarProducto()]
+        if self.action in ['destroy']:
+            return [PuedeEliminarProducto()]
+        if self.action in ['restock']:
+            return [PuedeEditarProducto()]
+        if self.action in ['vendido']:
+            return [PuedeEditarProducto()]
+        return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -45,6 +67,24 @@ class ProductoViewSet(ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=True, methods=['post'], url_path='restock')
+    def restock(self, request, pk=None):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance=instance, data=request.data)
+        if serializer.is_valid():
+            instancia = serializer.save()
+            return Response(self.serializer_get(instance = instancia).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=True, methods=['post'], url_path='vendido')
+    def vendido(self, request, pk=None):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance=instance, data=request.data)
+        if serializer.is_valid():
+            instancia = serializer.save()
+            return Response(self.serializer_get(instance = instancia).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class HistorialMovimientoInventarioViewSet(ModelViewSet):
     queryset = HistorialMovimientoInventario.objects.all()
