@@ -11,6 +11,10 @@ from django.contrib.auth.models import AnonymousUser
 
 from apps.core.api.views import GenericCatalogBaseViewSet
 from apps.core.permissions import *
+from apps.usuarios.permissions import *
+
+from rest_framework.exceptions import NotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..models import *
 from ..permissions import *
@@ -35,6 +39,12 @@ class TicketViewSet(GenericCatalogBaseViewSet):
         return self.serializer_get
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+
         if self.action in ['list', 'retrieve']:
             return [PuedeVerTickets()]
         if self.action == 'create':
@@ -50,7 +60,7 @@ class TicketViewSet(GenericCatalogBaseViewSet):
         return super().get_permissions()
     
     def get_queryset(self):
-        if not self.request.user.is_authenticated:
+        if not self.request.user.is_authenticated or not hasattr(self.request.user, 'perfil'):
             return Ticket.objects.none()
         if self.request.user.perfil.rol.nombre in ['Admin', 'Soporte']:
             return super().get_queryset()
@@ -109,6 +119,12 @@ class ComentarioViewSet(GenericCatalogBaseViewSet):
         return self.serializer_get
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+
         if self.action in ['list', 'retrieve']:
             return [PuedeVerComentarios()]
         if self.action == 'create':

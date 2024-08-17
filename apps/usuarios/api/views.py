@@ -7,6 +7,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenBlacklistView
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.exceptions import NotFound
+
+from django.core.exceptions import ObjectDoesNotExist
+
 
 from django.contrib.auth import authenticate
 
@@ -18,12 +22,13 @@ from ..permissions import *
 
 class RegistroUsuario(GenericAPIView):
     serializer_class = RegistroUsuarioSerializer
+    serializer_get = GetUsuarioSerializer
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        instance = serializer.save()
+        return Response(GetUsuarioSerializer(instance=instance).data, status=status.HTTP_201_CREATED)
 
 class LoginView(GenericAPIView):
     serializer_class = LoginUsuarioSerializer
@@ -93,6 +98,12 @@ class RolViewSet(GenericCatalogBaseViewSet):
         return self.serializer_get
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+
         if self.action in ['list', 'retrieve']:
             return [EsAdmin()]
         if self.action in ['create']:

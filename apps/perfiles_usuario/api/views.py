@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 from ..models import PerfilUsuario
 from .serializers import *
@@ -26,6 +28,12 @@ class PerfilUsuarioViewSet(ModelViewSet):
         return self.serializer_class
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+        
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated()]
         if self.action in ['create']:
@@ -37,7 +45,7 @@ class PerfilUsuarioViewSet(ModelViewSet):
         return super().get_permissions
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated:
+        if not self.request.user.is_authenticated or not hasattr(self.request.user, 'perfil'):
             return PerfilUsuario.objects.none()
         if self.request.user.is_superuser:
             return self.queryset.all()

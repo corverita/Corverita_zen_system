@@ -3,9 +3,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.decorators import action
+from rest_framework.exceptions import NotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 from apps.core.pagination import Paginador
 from apps.core.permissions import *
+from apps.usuarios.permissions import *
 
 from ..permissions import *
 from ..models import *
@@ -34,6 +37,12 @@ class ProductoViewSet(ModelViewSet):
         return self.serializer_get
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+        
         if self.action in ['list', 'retrieve']:
             return [PuedeVerProducto()]
         if self.action in ['create']:
@@ -91,3 +100,13 @@ class HistorialMovimientoInventarioViewSet(ModelViewSet):
     serializer_class = HistorialMovimientoInventarioSerializer
     http_method_names = ['get']
     pagination_class = Paginador
+
+    def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+        
+        if self.action in ['list', 'retrieve']:
+            return [EsAdmin()]

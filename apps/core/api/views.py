@@ -4,11 +4,14 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.http import Http404
 
 from apps.core.pagination import Paginador
+from apps.core.permissions import *
 from apps.usuarios.permissions import *
+from apps.usuarios.models import Usuario
 
 from ..models import *
 from .serializers import *
@@ -32,6 +35,12 @@ class GenericCatalogBaseViewSet(ModelViewSet):
         return self.serializer_get
     
     def get_permissions(self):
+        try:
+            if self.request.user.is_authenticated:
+                perfil = self.request.user.perfil
+        except ObjectDoesNotExist:
+            raise NotFound(detail="El usuario no tiene un perfil asociado.")
+        
         if self.action in ['create', 'update', 'destroy']:
             return [EsAdmin()]
         if self.action in ['list', 'retrieve']:
