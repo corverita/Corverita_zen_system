@@ -8,6 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.http import Http404
 
 from apps.core.pagination import Paginador
+from apps.usuarios.permissions import *
 
 from ..models import *
 from .serializers import *
@@ -29,6 +30,13 @@ class GenericCatalogBaseViewSet(ModelViewSet):
         if self.action == 'destroy':
             return DeleteCatalogoSerializer
         return self.serializer_get
+    
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'destroy']:
+            return [EsAdmin()]
+        if self.action in ['list', 'retrieve']:
+            return [EsAdmin() or EsSoporte()]
+        return super().get_permissions()
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

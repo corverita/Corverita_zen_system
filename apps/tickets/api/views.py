@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from apps.core.api.views import GenericCatalogBaseViewSet
 
 from ..models import *
+from ..permissions import *
 from .serializers import *
 
 # ViewSet para el modelo de Ticket
@@ -30,8 +31,23 @@ class TicketViewSet(GenericCatalogBaseViewSet):
             return AsignarPrioridadTicket
         return self.serializer_get
     
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [PuedeVerTickets()]
+        if self.action == 'create':
+            return [PuedeCrearTickets()]
+        if self.action == 'update':
+            return [PuedeEditarTickets()]
+        if self.action == 'destroy':
+            return [PuedeEliminarTickets()]
+        if self.action == 'asignar_prioridad':
+            return [PuedeAsignarPrioridad()]
+        if self.action == 'marcar_solucionado':
+            return [PuedeMarcarSolucionado()]
+        return super().get_permissions()
+    
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        if self.request.user.perfil.rol.nombre in ['Admin', 'Soporte']:
             return super().get_queryset()
         return super().get_queryset().filter(usuario=self.request.user)
     
@@ -44,13 +60,33 @@ class TicketViewSet(GenericCatalogBaseViewSet):
     
     @action(detail=True, methods=['put'])
     def asignar_prioridad(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=request.data, context={'usuario': request.user})
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         ticket = self.get_object()
         prioridad = Prioridad.objects.get(pk=serializer.validated_data['prioridad'])
         ticket.prioridad = prioridad
+        ticket.save()
+        return Response(self.serializer_get(instance = ticket).data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['put'])
+    def marcar_solucionado(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        estatus_solucionado = Estatus.objects.get(nombre='Solucionado')
+        
+        ticket = self.get_object()
+        if ticket.estatus == estatus_solucionado:
+            return Response({'detail': 'El ticket ya se encuentra solucionado'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Determinar si el usuario es el creador del ticket o si es un miembro del staff
+        if not request.user.is_superuser and ticket.usuario != request.user:
+            return Response({'detail': 'No tienes permisos para marcar el ticket como solucionado'}, status=status.HTTP_403_FORBIDDEN)
+        
+        ticket.estatus = estatus_solucionado
         ticket.save()
         return Response(self.serializer_get(instance = ticket).data, status=status.HTTP_200_OK)
     

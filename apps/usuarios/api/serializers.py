@@ -1,7 +1,53 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
-from ..models import Usuario
+from ..models import *
+
+# Serializadores para el modelo Permiso
+class PermisoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permiso
+        fields = '__all__'
+
+class PostPermisoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permiso
+        fields = ['nombre']
+
+class DeletePermisoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permiso
+        fields = ['id']
+
+# Serializadores para el modelo Rol
+class RolSerializer(serializers.ModelSerializer):
+    permisos = PermisoSerializer(many=True)
+    class Meta:
+        model = Rol
+        fields = '__all__'
+
+class PostRolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rol
+        fields = ['nombre']
+
+class DeleteRolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rol
+        fields = ['id']
+
+class AsignarPermisosRolSerializer(serializers.ModelSerializer):
+    permisos = serializers.ListField(child=serializers.IntegerField())
+    class Meta:
+        model = Rol
+        fields = ['permisos']
+
+    def validate_permisos(self, value):
+        for permiso in value:
+            if not Permiso.objects.filter(pk=permiso).exists():
+                raise serializers.ValidationError(f"El permiso '{permiso}' no existe")
+        return value
+
 
 # Serializador para el GET del modelo de Usuario
 class GetUsuarioSerializer(serializers.ModelSerializer):

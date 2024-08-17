@@ -49,6 +49,14 @@ class AsignarPrioridadTicket(serializers.ModelSerializer):
         model = Ticket
         fields = ['prioridad']
 
+    def validate(self, data):
+        usuario = self.context['usuario']
+        if not usuario.is_superuser: # Solo los miembros del staff pueden asignar prioridades
+            raise serializers.ValidationError("No tienes permisos para asignar la prioridad")
+        if not Prioridad.objects.filter(pk=data['prioridad']).exists():
+            raise serializers.ValidationError("La prioridad seleccionada no existe")
+        return data
+
 # Serializer para recibir información de DELETE
 class DeleteTicketSerializer(serializers.ModelSerializer):
     class Meta:

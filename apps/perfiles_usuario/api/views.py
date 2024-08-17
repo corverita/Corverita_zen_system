@@ -6,6 +6,8 @@ from rest_framework.decorators import action
 from ..models import PerfilUsuario
 from .serializers import *
 
+from apps.usuarios.models import Rol
+
 class PerfilUsuarioViewSet(ModelViewSet):
     queryset = PerfilUsuario.objects.all()
     serializer_class = PerfilUsuarioSerializer
@@ -16,6 +18,8 @@ class PerfilUsuarioViewSet(ModelViewSet):
             return PerfilUsuarioSerializer
         if self.action in ['list', 'retrieve']:
             return GetPerfilUsuarioSerializer
+        if self.action == 'asignar_rol':
+            return AsignarRolSerializer
         return self.serializer_class
 
     def get_queryset(self):
@@ -45,4 +49,12 @@ class PerfilUsuarioViewSet(ModelViewSet):
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         perfil = serializer.save(usuario=request.user)
+        return Response(GetPerfilUsuarioSerializer(instance = perfil).data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['post'])
+    def asignar_rol(self, request, *args, **kwargs):
+        serializer = AsignarRolSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        perfil = serializer.save()
         return Response(GetPerfilUsuarioSerializer(instance = perfil).data, status=status.HTTP_200_OK)
