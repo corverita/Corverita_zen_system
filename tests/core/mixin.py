@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 
 from apps.usuarios.models import Usuario
 from apps.perfiles_usuario.models import PerfilUsuario
@@ -46,6 +46,4 @@ class BaseTestCase(TestCase):
             "Authorization":"Bearer "+auth_token
         }
 
-    def test_example(self):
-        # Test something
-        assert self.usuario.id == 1
+        self.client = Client(headers=self.headers)
