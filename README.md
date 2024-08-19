@@ -1,15 +1,14 @@
 # Notas
 Sólo como nota adicional y para dejar en claro los módulos que realicé para la prueba backend se enlistan los módulos implementados:
 
-Usuarios (App) A Medias
-Perfiles de usuario (App Usuarios)
-Productos (App)
-Notificaciones del sistema (App)
-Tickets (App)
-Entradas y salidas del inventario (App Productos)
-Mecanismo de conexión con algún front-end (Swagger) Listo
+Usuarios
+Perfiles de usuario
+Productos
+Tickets
+Entradas y salidas del inventario
+Mecanismo de conexión con algún front-end
+Permisos
 
-Permisos* (App Usuarios)
 
 # Primeros Pasos
 De inicio es necesario instalar python 3.10, esto debido a que el ejemplo fue desarrollado con base a este.
