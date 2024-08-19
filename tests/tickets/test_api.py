@@ -1,6 +1,6 @@
 from tests.core.mixin import BaseTestCase
 
-from apps.tickets.models import Ticket
+from apps.tickets.models import Ticket, Comentario
 
 class TestTicket(BaseTestCase):
     
@@ -159,3 +159,155 @@ class TestTicket(BaseTestCase):
             response = self.client.post(f'/api/v1/tickets/tickets/{ticket.id}/marcar_solucionado/')
             assert response.status_code == 403
             assert response.data['detail'] == 'Usted no tiene permiso para realizar esta acción.'
+
+class ComentarioTest(BaseTestCase):
+    
+    def setUp(self):
+        super().setUp()
+
+        self.crear_tickets = self.create_permiso('Crear Tickets')
+        self.ver_tickets = self.create_permiso('Ver Tickets')
+        self.editar_tickets = self.create_permiso('Editar Tickets')
+        self.eliminar_tickets = self.create_permiso('Eliminar Tickets')
+        self.asignar_prioridad_tickets = self.create_permiso('Asignar Prioridad a Tickets')
+        self.marcar_solucionado_tickets = self.create_permiso('Marcar Solucionado Tickets')
+
+        self.prioridad_baja = self.create_prioridad('Baja', 'Prioridad baja')
+        self.prioridad_media = self.create_prioridad('Media', 'Prioridad media')
+        self.prioridad_alta = self.create_prioridad('Alta', 'Prioridad alta')
+
+        self.estatus_activo = self.create_estatus('Activo', 'Estado Activo')
+        self.estatus_en_proceso = self.create_estatus('En Proceso', 'Estado En Proceso')
+        self.estatus_solucionado = self.create_estatus('Solucionado', 'Estado Solucionado')
+        self.estatus_nuevo = self.create_estatus('Nuevo', 'Estado Nuevo')
+
+        self.usuario.perfil.rol.permisos.add(self.crear_tickets)
+        self.usuario.perfil.rol.permisos.add(self.ver_tickets)
+        self.usuario.perfil.rol.permisos.add(self.editar_tickets)
+        self.usuario.perfil.rol.permisos.add(self.eliminar_tickets)
+        self.usuario.perfil.rol.permisos.add(self.asignar_prioridad_tickets)
+        self.usuario.perfil.rol.permisos.add(self.marcar_solucionado_tickets)
+
+        self.ticket = {
+            "titulo": "Test Ticket",
+            "descripcion": "Este es un ticket de prueba",
+        }
+
+        self.ticket['estatus_id'] = self.estatus_nuevo.id
+        self.ticket['usuario_id'] = self.usuario.id
+        self.ticket = Ticket.objects.create(**self.ticket)
+
+        self.ver_comentario = self.create_permiso('Ver Comentario')
+        self.crear_comentario = self.create_permiso('Crear Comentario')
+        self.editar_comentario = self.create_permiso('Editar Comentario')
+        self.eliminar_comentario = self.create_permiso('Eliminar Comentario')
+
+        self.usuario.perfil.rol.permisos.add(self.ver_comentario)
+        self.usuario.perfil.rol.permisos.add(self.crear_comentario)
+        self.usuario.perfil.rol.permisos.add(self.ver_comentario)
+        self.usuario.perfil.rol.permisos.add(self.editar_comentario)
+        self.usuario.perfil.rol.permisos.add(self.eliminar_comentario)
+
+        self.data = {
+            "comentario": "Este es un comentario de prueba",
+        }
+
+    def test_crear_comentario(self):
+        # Test comment creation
+        self.data['ticket'] = self.ticket.id
+        response = self.client.post('/api/v1/tickets/comentarios/', self.data)
+        assert response.status_code == 201
+        assert response.data['comentario'] == self.data['comentario']
+
+    def test_crear_comentario_campos_requeridos(self):
+        # Test comment creation with missing required fields
+        response = self.client.post('/api/v1/tickets/comentarios/', self.data)
+        assert response.status_code == 400
+        assert response.data['ticket'] == ['Este campo es requerido.']
+
+    def test_crear_comentario_sin_permiso(self):
+        # Test comment creation without permission
+        self.usuario.perfil.rol.permisos.remove(self.crear_comentario)
+        self.data['ticket_id'] = self.ticket.id
+        response = self.client.post('/api/v1/tickets/comentarios/', self.data)
+        assert response.status_code == 403
+        assert response.data['detail'] == 'Usted no tiene permiso para realizar esta acción.'
+
+    def test_ver_comentarios(self):
+        # Test comment view
+        self.data['ticket_id'] = self.ticket.id
+        comentario = Comentario.objects.create(**self.data)
+        response = self.client.get('/api/v1/tickets/comentarios/')
+        assert response.status_code == 200
+        assert len(response.data['results']) == 1
+
+    def test_ver_comentario(self):
+        # Test comment view
+        self.data['ticket_id'] = self.ticket.id
+        comentario = Comentario.objects.create(**self.data)
+        response = self.client.get(f'/api/v1/tickets/comentarios/{comentario.id}/')
+        assert response.status_code == 200
+        assert response.data['comentario'] == self.data['comentario']
+
+    def test_editar_comentario(self):
+        # Test comment edit
+        self.data['ticket_id'] = self.ticket.id
+        self.data['usuario_id'] = self.usuario.id
+        comentario = Comentario.objects.create(**self.data)
+        data = {
+            "comentario": "Este es un comentario de prueba editado",
+        }
+        response = self.client.put(f'/api/v1/tickets/comentarios/{comentario.id}/', data, content_type='application/json')
+        assert response.status_code == 200
+        assert response.data['comentario'] == data['comentario']
+
+    def test_eliminar_comentario(self):
+        # Test comment deletion
+        self.data['ticket_id'] = self.ticket.id
+        self.data['usuario_id'] = self.usuario.id
+        comentario = Comentario.objects.create(**self.data)
+        response = self.client.delete(f'/api/v1/tickets/comentarios/{comentario.id}/')
+        assert response.status_code == 204
+
+    def test_editar_comentario_sin_permiso(self):
+        # Test comment edit without permission
+        self.data['ticket_id'] = self.ticket.id
+        comentario = Comentario.objects.create(**self.data)
+        self.usuario.perfil.rol.permisos.remove(self.editar_comentario)
+        data = {
+            "comentario": "Este es un comentario de prueba editado",
+        }
+        response = self.client.put(f'/api/v1/tickets/comentarios/{comentario.id}/', data, content_type='application/json')
+        assert response.status_code == 403
+        assert response.data['detail'] == 'Usted no tiene permiso para realizar esta acción.'
+
+    def test_ver_comentarios_sin_permiso(self):
+        # Test comment view without permission
+        self.data['ticket_id'] = self.ticket.id
+        comentario = Comentario.objects.create(**self.data)
+        self.usuario.perfil.rol.permisos.remove(self.ver_comentario)
+        response = self.client.get('/api/v1/tickets/comentarios/')
+        assert response.status_code == 403
+        assert response.data['detail'] == 'Usted no tiene permiso para realizar esta acción.'
+
+    def test_ver_comentario_sin_permiso(self):
+        # Test comment view without permission
+        self.data['ticket_id'] = self.ticket.id
+        comentario = Comentario.objects.create(**self.data)
+        self.usuario.perfil.rol.permisos.remove(self.ver_comentario)
+        response = self.client.get(f'/api/v1/tickets/comentarios/{comentario.id}/')
+        assert response.status_code == 403
+        assert response.data['detail'] == 'Usted no tiene permiso para realizar esta acción.'
+
+    def test_crear_comentario_sin_ticket(self):
+        # Test comment creation without ticket
+        response = self.client.post('/api/v1/tickets/comentarios/', self.data)
+        assert response.status_code == 400
+        assert response.data['ticket'] == ['Este campo es requerido.']
+
+    def test_crear_comentario_con_ticket_inexistente(self):
+        # Test comment creation with non-existent ticket
+        self.data['ticket'] = 999
+        response = self.client.post('/api/v1/tickets/comentarios/', self.data)
+        assert response.status_code == 400
+        assert response.data['ticket'] == ['Clave primaria "999" inválida - objeto no existe.']
