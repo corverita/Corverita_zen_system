@@ -67,6 +67,7 @@ class PermisoViewSet(GenericCatalogBaseViewSet):
     queryset = Permiso.objects.all()
     serializer_get = PermisoSerializer
     search_fields = ['nombre']
+    ordering_fields = ['nombre']
     filterset_fields = []
 
     def get_serializer_class(self):
@@ -84,6 +85,7 @@ class RolViewSet(GenericCatalogBaseViewSet):
     queryset = Rol.objects.all()
     serializer_get = RolSerializer
     search_fields = ['nombre', 'permisos__nombre']
+    ordering_fields = ['nombre']
     filterset_fields = ['permisos']
 
     def get_serializer_class(self):
