@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 
-from apps.usuarios.models import Usuario
+from apps.usuarios.models import Usuario, Rol, Permiso
 from apps.perfiles_usuario.models import PerfilUsuario
-from apps.usuarios.models import Rol
+from apps.catalogos.models import Prioridad, Estatus
 
 from .utils import *
 
@@ -26,6 +26,21 @@ class BaseTestCase(TestCase):
             biografia=biografia, usuario=usuario, fecha_nacimiento=fecha_nacimiento, telefono=telefono
         )
         return perfil
+    
+    def create_permiso(self, nombre,):
+        # Create a permission for testing
+        permiso = Permiso.objects.create(nombre=nombre)
+        return permiso
+    
+    def create_prioridad(self, nombre, descripcion):
+        # Create a priority for testing
+        prioridad = Prioridad.objects.create(nombre=nombre, descripcion=descripcion)
+        return prioridad
+    
+    def create_estatus(self, nombre, descripcion):
+        # Create a status for testing
+        estatus = Estatus.objects.create(nombre=nombre, descripcion=descripcion)
+        return estatus
     
     def setUp(self):
         # Set up any necessary data or configurations for your test case
