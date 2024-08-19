@@ -1,0 +1,32 @@
+volumes:
+  local_postgres_data: {}
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zentric_web
+    env_file:
+      - .env-example
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/code
+    restart: on-failure
+
+  db:
+    image: postgres:15
+    container_name: zentric_db
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=zentric
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: on-failure
