@@ -68,6 +68,24 @@ class PrioridadAPITestCase(BaseTestCase):
         response = self.client.put('/api/v1/catalogos/prioridad/999/', data=self.data, content_type='application/json')
         self.assertEqual(response.status_code, 404)
         
+    def test_create_nombre_no_mas_100(self):
+        # Testear que el nombre no sea mayor a 100 caracteres
+        self.data = {
+            "nombre": "Baja" * 50,
+            "descripcion": "Prioridad baja"
+        }
+        response = self.client.post('/api/v1/catalogos/prioridad/', data=self.data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_descripcion_no_mas_500(self):
+        # Testear que la descripción no sea mayor a 500 caracteres
+        self.data = {
+            "nombre": "Baja",
+            "descripcion": "Prioridad baja" * 100
+        }
+        response = self.client.post('/api/v1/catalogos/prioridad/', data=self.data)
+        self.assertEqual(response.status_code, 400)
+
         
 # Pruebas de la API de Estatus
 class EstatusAPITestCase(BaseTestCase):
@@ -125,6 +143,24 @@ class EstatusAPITestCase(BaseTestCase):
         response = self.client.delete('/api/v1/catalogos/estatus/999/')
         self.assertEqual(response.status_code, 404)
 
+    def test_estatus_nombre_no_mas_100(self):
+        # Testear que el nombre no sea mayor a 100 caracteres
+        self.data = {
+            "nombre": "Activo" * 50,
+            "descripcion": "Estatus activo"
+        }
+        response = self.client.post('/api/v1/catalogos/estatus/', data=self.data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_estatus_descripcion_no_mas_500(self):
+        # Testear que la descripción no sea mayor a 500 caracteres
+        self.data = {
+            "nombre": "Activo",
+            "descripcion": "Estatus activo" * 100
+        }
+        response = self.client.post('/api/v1/catalogos/estatus/', data=self.data)
+        self.assertEqual(response.status_code, 400)
+
 # Pruebas de la API de TipoMovimiento
 class TipoMovimientoAPITestCase(BaseTestCase):
 
@@ -180,3 +216,21 @@ class TipoMovimientoAPITestCase(BaseTestCase):
         # Testear que un tipo de movimiento no exista al eliminar
         response = self.client.delete('/api/v1/catalogos/tipo-movimiento/999/')
         self.assertEqual(response.status_code, 404)
+
+    def test_tipo_movimiento_nombre_no_mas_100(self):
+        # Testear que el nombre no sea mayor a 100 caracteres
+        self.data = {
+            "nombre": "Entrada" * 50,
+            "descripcion": "Tipo de movimiento de entrada"
+        }
+        response = self.client.post('/api/v1/catalogos/tipo-movimiento/', data=self.data)
+        self.assertEqual(response.status_code, 400)
+
+    def test_tipo_movimiento_descripcion_no_mas_500(self):
+        # Testear que la descripción no sea mayor a 500 caracteres
+        self.data = {
+            "nombre": "Entrada",
+            "descripcion": "Tipo de movimiento de entrada" * 100
+        }
+        response = self.client.post('/api/v1/catalogos/tipo-movimiento/', data=self.data)
+        self.assertEqual(response.status_code, 400)
