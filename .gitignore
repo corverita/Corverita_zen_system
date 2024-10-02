@@ -1,8 +1,32 @@
-# Archivos de configuración base del proyecto
+### Project template
+
+cride/media/
+
+.pytest_cache/
+
+
+.ipython/
+.env
 env/*
+.envs/*
+!.envs/.local/
 
 # Archivos temporales
 *pycache*/
 
 # Archivos de migraciones
 migrations/
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+# Get out cancer
+media/
+log.log
+sust.conf
+*.sqlite3
+/TODO
+/sust/dump.rdb

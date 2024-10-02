@@ -6,6 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ObjectDoesNotExist
 
+from apps.core.pagination import Paginador
+
 from ..models import PerfilUsuario
 from .serializers import *
 
@@ -17,6 +19,7 @@ class PerfilUsuarioViewSet(ModelViewSet):
     queryset = PerfilUsuario.objects.all()
     serializer_class = PerfilUsuarioSerializer
     http_method_names = ['get', 'post', 'put']
+    pagination_class = Paginador
 
     def get_serializer_class(self):
         if self.action in ['create', 'update']:

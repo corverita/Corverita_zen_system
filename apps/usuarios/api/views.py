@@ -26,9 +26,10 @@ class RegistroUsuario(GenericAPIView):
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        instance = serializer.save()
-        return Response(GetUsuarioSerializer(instance=instance).data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(GenericAPIView):
     serializer_class = LoginUsuarioSerializer
@@ -37,7 +38,7 @@ class LoginView(GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        user = authenticate(email=serializer.validated_data['email'], password=serializer.validated_data['password'])
+        user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
 
         if user is not None:
             refresh = RefreshToken.for_user(user)
@@ -67,6 +68,7 @@ class PermisoViewSet(GenericCatalogBaseViewSet):
     queryset = Permiso.objects.all()
     serializer_get = PermisoSerializer
     search_fields = ['nombre']
+    ordering_fields = ['nombre']
     filterset_fields = []
 
     def get_serializer_class(self):
@@ -84,6 +86,7 @@ class RolViewSet(GenericCatalogBaseViewSet):
     queryset = Rol.objects.all()
     serializer_get = RolSerializer
     search_fields = ['nombre', 'permisos__nombre']
+    ordering_fields = ['nombre']
     filterset_fields = ['permisos']
 
     def get_serializer_class(self):

@@ -86,5 +86,5 @@ class RegistroUsuarioSerializer(serializers.ModelSerializer):
     
 # Serializer para el login de un modelo de Usuario
 class LoginUsuarioSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
+    username = serializers.CharField(required=True)
     password = serializers.CharField(required=True)

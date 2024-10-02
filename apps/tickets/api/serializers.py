@@ -98,6 +98,8 @@ class PostComentarioSerializer(serializers.ModelSerializer):
         ticket = Ticket.objects.get(pk=data['ticket'].id)
         if ticket.estatus == estado_solucionado:
             raise serializers.ValidationError("El ticket ya se encuentra solucionado, por tanto no puedes agregar más comentarios")
+        
+        return data
 
     def validate_comentario(self, value):
         if len(value) < 5:

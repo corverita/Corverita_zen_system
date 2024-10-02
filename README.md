@@ -1,15 +1,14 @@
 # Notas
 Sólo como nota adicional y para dejar en claro los módulos que realicé para la prueba backend se enlistan los módulos implementados:
 
-Usuarios (App) A Medias
-Perfiles de usuario (App Usuarios)
-Productos (App)
-Notificaciones del sistema (App)
-Tickets (App)
-Entradas y salidas del inventario (App Productos)
-Mecanismo de conexión con algún front-end (Swagger) Listo
+Usuarios
+Perfiles de usuario
+Productos
+Tickets
+Entradas y salidas del inventario
+Mecanismo de conexión con algún front-end
+Permisos
 
-Permisos* (App Usuarios)
 
 # Primeros Pasos
 De inicio es necesario instalar python 3.10, esto debido a que el ejemplo fue desarrollado con base a este.
@@ -44,10 +43,30 @@ python manage.py createsuperuser
 
 Nos solicitará un usuario, un correo y una contraseña, estas serán tus credenciales.
 
-# Primeros pasos
+# Primeros pasos tras ejecución del setup del proyecto
 
 - Entraremos en nuestra conexión frontend con nuestro superusuario, para poder comenzar a gestionar detalles de primeras implementaciones.
 - Registraremos un perfil de usuario, para poder utilizar el sistema con los roles y permisos personalizados.
 - Una vez registremos un perfil de usuario, nos asignaremos el rol de Admin, para tener total libertad de permisos y acciones, así como podemos habilitarle a otra gente sus roles.
 
 Ya a partir de aquí tendremos todo el sistema completamente listo y libre.
+
+Los **pain points** que conocemos de la persona son:
+- No tener información de manera rápida.
+- Poder acceder al sistema únicamente desde su oficina.
+- No poder ejecutar los procesos de forma rápida.
+- No tener claridad en qué parte del proceso está o si este ya terminó o falló.
+
+Los **deseos** que conocemos de la persona son:
+- Tranquilidad y seguridad.
+- Tener el control y saber qué es lo que está pasando con el sistema.
+- Libertad.
+- Sentirse acompañada y atendida.
+- Tener tiempo libre.
+
+## Requerimientos Técnicos:
+- Sistema desarrollado en Django.
+- Base de datos en postgres
+- Uso de paquetes y librerías para desarrollo más sencillo y ágil.
+- Bajo consumo de recursos computacionales.
+- Tiempos de carga menores a 3 segundos.

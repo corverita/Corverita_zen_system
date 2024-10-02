@@ -25,6 +25,7 @@ class TicketViewSet(GenericCatalogBaseViewSet):
     queryset = Ticket.objects.all()
     serializer_get = BaseTicketSerializer
     search_fields = ['titulo', 'descripcion']
+    ordering_fields = ['titulo', 'descripcion', 'prioridad', 'estatus', 'usuario', 'fecha_creacion', 'fecha_modificacion']
     filterset_fields = ['prioridad', 'estatus', 'usuario']
 
     def get_serializer_class(self):
@@ -107,6 +108,7 @@ class ComentarioViewSet(GenericCatalogBaseViewSet):
     queryset = Comentario.objects.all()
     serializer_get = BaseComentarioSerializer
     search_fields = ['comentario']
+    ordering_fields = ['comentario', 'usuario', 'fecha_creacion', 'fecha_modificacion']
     filterset_fields = ['ticket', 'usuario']
 
     def get_serializer_class(self):

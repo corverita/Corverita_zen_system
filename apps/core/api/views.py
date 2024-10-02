@@ -22,6 +22,7 @@ class GenericCatalogBaseViewSet(ModelViewSet):
     serializer_get = None
     http_method_names = ['get', 'post', 'put', 'delete']
     search_fields = ['nombre', 'descripcion']
+    ordering_fields = ['nombre', 'descripcion']
     filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     pagination_class = Paginador
 

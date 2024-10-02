@@ -20,6 +20,7 @@ class ProductoViewSet(ModelViewSet):
     serializer_get = BaseProductoSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
     search_fields = ['nombre', 'descripcion']
+    ordering_fields = ['nombre', 'descripcion', 'precio', 'stock', 'fecha_creacion', 'fecha_modificacion']
     filter_backends = [SearchFilter, OrderingFilter]
     pagination_class = Paginador
 
