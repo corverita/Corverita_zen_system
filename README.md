@@ -70,7 +70,3 @@ Los **deseos** que conocemos de la persona son:
 - Uso de paquetes y librerías para desarrollo más sencillo y ágil.
 - Bajo consumo de recursos computacionales.
 - Tiempos de carga menores a 3 segundos.
-
-Al final tendremos otros 15 minutos para preguntas y respuestas.
-
-Tienes total libertad de usar las herramientas y tecnologías que desees para cumplir con el objetivo (todo basado principalmente en Django), lo que nos interesa saber, son tus conocimientos en la materia.
